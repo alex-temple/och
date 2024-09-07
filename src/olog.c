@@ -3,7 +3,7 @@
 
 #include "defines.h"
 #include "ostring.h"
-#include "log.h"
+#include "olog.h"
 
 void output(const enum log_level level, const char* format, ...)
 {
