@@ -5,38 +5,46 @@
 
 #include "ostring.h"
 
-ostring ostring_new(const char* source, const size_t length)
+struct ostring_def {
+    size_t length;
+    size_t size;
+    char buffer[];
+};
+
+#define GET_DEF(x) ((struct ostring_def*)(x - sizeof(struct ostring_def)))
+
+ostring ostring_new(const char* source, const size_t size)
 {
     const size_t struct_size = sizeof(struct ostring_def);
 
-    struct ostring_def* def = malloc(struct_size + length + 1);
+    struct ostring_def* def = malloc(struct_size + size + 1);
 
     if (!def) return NULL;
 
-    def->size = length;
+    def->size = size;
 
-    if (length && source)
+    if (size && source)
     {
         const size_t source_length = strlen(source);
-        const size_t copy_length = (source_length < length) ? source_length : length;
+        const size_t copy_length = (source_length < size) ? source_length : size;
         memcpy(def->buffer, source, copy_length);
-        memset(def->buffer + copy_length, 0, length - copy_length);
+        memset(def->buffer + copy_length, 0, size - copy_length);
         def->length = copy_length;
     }
     else
     {
-        memset(def->buffer, 0, length);
+        memset(def->buffer, 0, size);
         def->length = 0;
     }
 
-    def->buffer[length] = '\0';
+    def->buffer[size] = '\0';
 
     return def->buffer;
 }
 
-ostring ostring_new_empty(const size_t length)
+ostring ostring_new_empty(const size_t size)
 {
-    return ostring_new(NULL, length);
+    return ostring_new(NULL, size);
 }
 
 ostring ostring_new_from(const char* source)
@@ -47,6 +55,16 @@ ostring ostring_new_from(const char* source)
 void ostring_delete(const ostring str)
 {
     free(GET_DEF(str));
+}
+
+OINLINE size_t ostring_length(const ostring str)
+{
+    return GET_DEF(str)->length;
+}
+
+OINLINE size_t ostring_size(const ostring str)
+{
+    return GET_DEF(str)->size;
 }
 
 ostring ostring_format(const char* format, ...)
@@ -79,4 +97,32 @@ ostring ostring_format_args(const char* format, va_list args)
     vsnprintf(str, length + 1, format, args);
 
     return str;
+}
+
+char* ostring_ptr_of(ostring str, const char c)
+{
+    if (!str) return NULL;
+
+    while (*str)
+    {
+        if (*str == c)
+            return str;
+
+        str++;
+    }
+
+    return NULL;
+}
+
+char* ostring_ptr_of_last(const ostring str, const char c)
+{
+    if (!str) return NULL;
+
+    for (size_t i = ostring_length(str); i > 0; --i)
+    {
+        if (str[i - 1] == c)
+            return &str[i - 1];
+    }
+
+    return NULL;
 }
