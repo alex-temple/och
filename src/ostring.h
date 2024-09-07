@@ -11,8 +11,8 @@ ostring ostring_new_from(const char* source);
 
 void ostring_delete(ostring str);
 
-OINLINE size_t ostring_length(const ostring str);
-OINLINE size_t ostring_size(const ostring str);
+size_t ostring_length(const ostring str);
+size_t ostring_size(const ostring str);
 
 ostring ostring_format(const char* format, ...);
 ostring ostring_format_args(const char* format, va_list args);

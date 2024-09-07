@@ -57,12 +57,12 @@ void ostring_delete(const ostring str)
     free(GET_DEF(str));
 }
 
-OINLINE size_t ostring_length(const ostring str)
+size_t ostring_length(const ostring str)
 {
     return GET_DEF(str)->length;
 }
 
-OINLINE size_t ostring_size(const ostring str)
+size_t ostring_size(const ostring str)
 {
     return GET_DEF(str)->size;
 }

@@ -12,11 +12,11 @@ void output(const enum log_level level, const char* format, ...)
   	va_list args;
   	va_start(args, format);
 
-    ostring formatted = ostring_format_args(format, args);
+    const ostring formatted = ostring_format_args(format, args);
 
     va_end(args);
 
-	ostring message = ostring_format("%s%s\n", tags[level], formatted);
+	const ostring message = ostring_format("%s%s\n", tags[level], formatted);
 
     ostring_delete(formatted);
 
