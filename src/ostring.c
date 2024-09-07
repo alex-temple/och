@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <string.h>
-#include <stdarg.h>
 #include <stdio.h>
 
 #include "ostring.h"
@@ -99,7 +98,7 @@ ostring ostring_format_args(const char* format, va_list args)
     return str;
 }
 
-char* ostring_ptr_of(ostring str, const char c)
+const char* ostring_ptr_of(const char* str, const char c)
 {
     if (!str) return NULL;
 
@@ -114,15 +113,19 @@ char* ostring_ptr_of(ostring str, const char c)
     return NULL;
 }
 
-char* ostring_ptr_of_last(const ostring str, const char c)
+const char* ostring_ptr_of_last(const char* str, const char c)
 {
     if (!str) return NULL;
 
-    for (size_t i = ostring_length(str); i > 0; --i)
+    const char* last = NULL;
+
+    while (*str)
     {
-        if (str[i - 1] == c)
-            return &str[i - 1];
+        if (*str == c)
+            last = str;
+
+        str++;
     }
 
-    return NULL;
+    return last;
 }

@@ -1,6 +1,8 @@
 #ifndef O_STRING
 #define O_STRING
 
+#include <stdarg.h>
+
 #include "defines.h"
 
 typedef char* ostring;
@@ -17,7 +19,7 @@ size_t ostring_size(const ostring str);
 ostring ostring_format(const char* format, ...);
 ostring ostring_format_args(const char* format, va_list args);
 
-char* ostring_ptr_of(ostring str, const char c);
-char* ostring_ptr_of_last(ostring str, const char c);
+const char* ostring_ptr_of(const char* str, const char c);
+const char* ostring_ptr_of_last(const char* str, const char c);
 
 #endif

@@ -11,6 +11,6 @@ enum log_level {
   ERROR,
 };
 
-void output(const enum log_level level, const char* message, ...);
+void output(const enum log_level level, const char* format, ...);
 
 #endif
