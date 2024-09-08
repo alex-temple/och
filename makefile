@@ -13,28 +13,27 @@ TARGET := $(BIN_DIR)/och.a
 SOURCES := $(wildcard $(SRC_DIR)/*.c)
 OBJECTS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SOURCES))
 
-all: $(TARGET)
-	@mkdir -p $(INCLUDE_DIR)/och
-	@cp $(SRC_DIR)/*.h $(INCLUDE_DIR)/och/
+all: $(TARGET) | $(INCLUDE_DIR)
+	cp $(SRC_DIR)/*.h $(INCLUDE_DIR)/och/
 
-#create objects
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) -c $< -o $@ $(CFLAGS)
 
-#create library
 $(TARGET): $(OBJECTS) | $(BIN_DIR)
 	$(AR) rcs $@ $(OBJECTS)
 
-#dir makers
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
+$(INCLUDE_DIR):
+	mkdir -p $(INCLUDE_DIR)/och
+
 clean:
 	rm -rf $(OBJ_DIR)
 	rm -rf $(BIN_DIR)
 	rm -rf $(INCLUDE_DIR)
 
-.PHONY: clean install all
+.PHONY: clean all
