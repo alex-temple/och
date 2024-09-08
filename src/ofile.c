@@ -70,7 +70,7 @@ bool file_copy_to(const char* source, const char* directory)
 {
     const char* file_name = ostring_ptr_of_last(source, '/');
     const ostring destination = ostring_format("%s/%s", directory, file_name ? file_name + 1 : file_name);
-    const bool result = copy_file(source, destination);
+    const bool result = file_copy(source, destination);
     ostring_delete(destination);
     return result;
 }
