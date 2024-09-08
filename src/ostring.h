@@ -3,9 +3,11 @@
 
 #include <stdarg.h>
 
-#include "defines.h"
+#ifndef O_DEFINES
 
 typedef char* ostring;
+
+#endif
 
 ostring ostring_new(const char* source, const size_t size);
 ostring ostring_new_empty(const size_t size);

@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "defines.h"
 #include "ostring.h"
 
 struct ostring_def {
