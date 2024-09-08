@@ -19,7 +19,7 @@ bool is_file(const char* source)
     return S_ISREG(s.st_mode);
 }
 
-bool copy_file(const char* source, const char* destination)
+bool file_copy(const char* source, const char* destination)
 {
     i32 source_file = 0;
     i32 destination_file = 0;
@@ -66,7 +66,7 @@ bool copy_file(const char* source, const char* destination)
     return true;
 }
 
-bool copy_file_to(const char* source, const char* directory)
+bool file_copy_to(const char* source, const char* directory)
 {
     const char* file_name = ostring_ptr_of_last(source, '/');
     const ostring destination = ostring_format("%s/%s", directory, file_name ? file_name + 1 : file_name);
