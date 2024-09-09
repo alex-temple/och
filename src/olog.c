@@ -20,7 +20,7 @@ void output(const enum log_level level, const char* format, ...)
 
     ostring_delete(formatted);
 
-    printf("%s", message);
+    fprintf(stderr, "%s", message);
 
     ostring_delete(message);
 }
