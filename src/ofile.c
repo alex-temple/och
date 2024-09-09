@@ -69,8 +69,22 @@ bool file_copy(const char* source, const char* destination)
 bool file_copy_to(const char* source, const char* directory)
 {
     const char* file_name = ostring_ptr_of_last(source, '/');
-    const ostring destination = ostring_format("%s/%s", directory, file_name ? file_name + 1 : file_name);
+
+    //create a copy of the given string to prevent surprise changes
+    const ostring directory_copy = ostring_new_from(directory);
+    const size_t directory_length = ostring_length(directory_copy);
+
+    if (directory_length > 0 && directory[directory_length - 1] == '/')
+    {
+        directory_copy[directory_length - 1] = '\0';
+    }
+
+    const ostring destination = ostring_format("%s/%s", directory_copy, file_name ? file_name + 1 : source);
+
     const bool result = file_copy(source, destination);
+
+    ostring_delete(directory_copy);
     ostring_delete(destination);
+
     return result;
 }
