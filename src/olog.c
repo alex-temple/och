@@ -7,7 +7,7 @@
 
 void output(const enum log_level level, const char* format, ...)
 {
-  	const char* tags[4] = { "[DEBUG]", "[INFO]: ", "[WARN]: ", "[ERROR]: " };
+  	const char* tags[4] = { "[DEBUG]: ", "[INFO]: ", "[WARN]: ", "[ERROR]: " };
 
   	va_list args;
   	va_start(args, format);
