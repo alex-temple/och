@@ -17,7 +17,7 @@ bool is_file(const char* source)
     return !stat(source, &s) && S_ISREG(s.st_mode);
 }
 
-bool is_empty(const char* source)
+bool file_exists(const char* source)
 {
     struct stat s;
     return !stat(source, &s) && !s.st_mode;
