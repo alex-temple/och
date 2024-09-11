@@ -8,15 +8,13 @@
 bool is_dir(const char* source)
 {
     struct stat s;
-    stat(source, &s);
-    return S_ISDIR(s.st_mode);
+    return !stat(source, &s) && S_ISDIR(s.st_mode);
 }
 
 bool is_file(const char* source)
 {
     struct stat s;
-    stat(source, &s);
-    return S_ISREG(s.st_mode);
+    return !stat(source, &s) && S_ISREG(s.st_mode);
 }
 
 bool file_copy(const char* source, const char* destination)
@@ -36,7 +34,6 @@ bool file_copy(const char* source, const char* destination)
     }
 
     char buffer[8192];
-    posix_fadvise(source_file, 0, 0, POSIX_FADV_SEQUENTIAL);
 
     i32 read_result;
 
