@@ -17,6 +17,12 @@ bool is_file(const char* source)
     return !stat(source, &s) && S_ISREG(s.st_mode);
 }
 
+bool is_empty(const char* source)
+{
+    struct stat s;
+    return !stat(source, &s) && !s.st_mode;
+}
+
 bool file_copy(const char* source, const char* destination)
 {
     i32 source_file = 0;
