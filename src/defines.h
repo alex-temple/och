@@ -5,7 +5,7 @@
 #define ONOINLINE __attribute__((noinline))
 
 typedef enum { false, true } bool;
-#define ENUM_TO_STRING(x) x == true ? "true" : "false"
+#define BOOL_TO_STRING(x) x == true ? "true" : "false"
 
 typedef signed char i8;
 typedef signed short i16;
