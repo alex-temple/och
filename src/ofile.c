@@ -71,7 +71,7 @@ bool file_copy(const char* source, const char* destination)
 
 bool file_copy_to(const char* source, const char* directory)
 {
-    const char* file_name = ostring_ptr_of_last(source, '/');
+    const char* file_name = string_ptr_of_last(source, '/');
 
     //create a copy of the given string to prevent surprise changes
     const ostring directory_copy = ostring_new_from(directory);
@@ -90,4 +90,32 @@ bool file_copy_to(const char* source, const char* directory)
     ostring_delete(destination);
 
     return result;
+}
+
+size_t file_read_until(ostring* str, char* delimiter, FILE* input)
+{
+    if (!str || !input) return -1;
+
+    if (!*str) *str = ostring_new_empty(128);
+
+    size_t written = 0;
+    i32 c;
+
+    while ((c = fgetc(input)) != EOF)
+    {
+        if (string_contains(delimiter, c)) break;
+
+        *str = ostring_push(*str, (char)c);
+        
+        written++;
+    }
+
+    if (written == 0 || c == EOF) return -1;
+
+    return written;
+}
+
+size_t file_readline(ostring* str, FILE* input)
+{
+    return file_read_until(str, "\n", input);
 }

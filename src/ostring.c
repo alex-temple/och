@@ -57,6 +57,30 @@ void ostring_delete(const ostring str)
     free(GET_DEF(str));
 }
 
+ostring ostring_resize(ostring str, size_t new_size)
+{
+    const size_t struct_size = sizeof(struct ostring_def);
+
+    struct ostring_def* old_def = GET_DEF(str);
+    struct ostring_def* new_def = realloc(old_def, struct_size + new_size + 1);
+
+    if (!new_def) return NULL;
+
+    const size_t old_length = old_def->length;
+    new_def->length = (old_length > new_size) ? new_size : old_length;
+    new_def->size = new_size;
+
+    return new_def->buffer;
+}
+
+void ostring_clear(ostring str)
+{
+    struct ostring_def* def = GET_DEF(str);
+
+    def->length = 0;
+    def->buffer[0] = '\0';
+}
+
 size_t ostring_length(const ostring str)
 {
     return GET_DEF(str)->length;
@@ -99,7 +123,60 @@ ostring ostring_format_args(const char* format, va_list args)
     return str;
 }
 
-const char* ostring_ptr_of(const char* str, const char c)
+ostring ostring_push(ostring str, char c)
+{
+    const size_t length = ostring_length(str);
+    const size_t size = ostring_size(str);
+
+    if (length == size)
+    {
+        str = ostring_resize(str, size * 2);   
+    }
+
+    str[length] = c;
+    str[length + 1] = '\0';
+
+    GET_DEF(str)->length++;
+
+    return str;
+}
+
+/*
+char ostring_pop(ostring str)
+{
+
+}
+*/
+
+/*
+i32 ostring_compare(const ostring left, const ostring right)
+{
+    if (!left || !right) return 
+
+    size_t left_length = ostring_length(left);
+    size_t right_length = ostring_length(right);
+
+    size_t min_length = (left_length < right_length) ? left_length : right_length;
+
+    i32 result = memcmp(left, right, min_length);
+
+    if (result) return result;
+
+    return (left_length > right_length) ? 1 : (left_length < right_length) ? -1 : 0;
+}
+*/
+
+bool string_contains(const char* str, const char c)
+{
+    for (; *str; ++str) 
+    {
+        if (*str == c) return true;
+    }
+    
+    return false;
+}
+
+const char* string_ptr_of(const char* str, const char c)
 {
     if (!str) return NULL;
 
@@ -114,7 +191,7 @@ const char* ostring_ptr_of(const char* str, const char c)
     return NULL;
 }
 
-const char* ostring_ptr_of_last(const char* str, const char c)
+const char* string_ptr_of_last(const char* str, const char c)
 {
     if (!str) return NULL;
 
