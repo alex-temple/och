@@ -1,13 +1,10 @@
 #ifndef O_STRING
 #define O_STRING
 
+#include <stdlib.h>
 #include <stdarg.h>
 
-#ifndef O_DEFINES
-
-typedef char* ostring;
-
-#endif
+#include "defines.h"
 
 ostring ostring_new(const char* source, const size_t size);
 ostring ostring_new_empty(const size_t size);
@@ -25,9 +22,10 @@ ostring ostring_format(const char* format, ...);
 ostring ostring_format_args(const char* format, va_list args);
 
 ostring ostring_push(ostring str, char c);
-char ostring_pop(ostring str);
 
 i32 ostring_compare(const ostring left, const ostring right);
+
+ostring ostring_token(const char** ptr, const char* delimiters);
 
 //
 

@@ -92,7 +92,7 @@ bool file_copy_to(const char* source, const char* directory)
     return result;
 }
 
-size_t file_read_until(ostring* str, char* delimiter, FILE* input)
+size_t file_read_until(ostring* str, const char* delimiter, FILE* input)
 {
     if (!str || !input) return -1;
 
@@ -107,15 +107,12 @@ size_t file_read_until(ostring* str, char* delimiter, FILE* input)
 
         *str = ostring_push(*str, (char)c);
         
+        if (!*str) return -1;
+
         written++;
     }
 
     if (written == 0 || c == EOF) return -1;
 
     return written;
-}
-
-size_t file_readline(ostring* str, FILE* input)
-{
-    return file_read_until(str, "\n", input);
 }

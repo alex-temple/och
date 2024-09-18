@@ -1,8 +1,6 @@
-#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
-#include "defines.h"
 #include "ostring.h"
 
 struct ostring_def {
@@ -62,11 +60,12 @@ ostring ostring_resize(ostring str, size_t new_size)
     const size_t struct_size = sizeof(struct ostring_def);
 
     struct ostring_def* old_def = GET_DEF(str);
+    const size_t old_length = old_def->length;
+
     struct ostring_def* new_def = realloc(old_def, struct_size + new_size + 1);
 
     if (!new_def) return NULL;
 
-    const size_t old_length = old_def->length;
     new_def->length = (old_length > new_size) ? new_size : old_length;
     new_def->size = new_size;
 
@@ -142,13 +141,6 @@ ostring ostring_push(ostring str, char c)
 }
 
 /*
-char ostring_pop(ostring str)
-{
-
-}
-*/
-
-/*
 i32 ostring_compare(const ostring left, const ostring right)
 {
     if (!left || !right) return 
@@ -163,6 +155,23 @@ i32 ostring_compare(const ostring left, const ostring right)
     if (result) return result;
 
     return (left_length > right_length) ? 1 : (left_length < right_length) ? -1 : 0;
+}
+*/
+
+/*
+ostring ostring_token(const char** ptr, const char* delimiters)
+{
+    const char* token_start = *ptr;
+
+    if (!token_start || !*token_start) return NULL;
+
+    while (string_contains(delimiters, *(++token_start)));
+
+    const char* token_end = token_start;
+
+    while (*token_end && !string_contains(delimiters, *(++token_end)));
+
+    return ostring_new(token_start, (*ptr = token_end) - token_start);
 }
 */
 
