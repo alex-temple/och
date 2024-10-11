@@ -25,17 +25,17 @@ bool file_exists(const char* source)
 
 bool file_copy(const char* source, const char* destination)
 {
-    i32 source_file = 0;
-    i32 destination_file = 0;
+    i32 source_fd = 0;
+    i32 destination_fd = 0;
 
-    if ((source_file = open(source, O_RDONLY)) < 0)
+    if ((source_fd = open(source, O_RDONLY)) < 0)
     {
         return false;
     }
 
-    if ((destination_file = open(destination, O_WRONLY | O_CREAT | O_TRUNC, 0644)) < 0)
+    if ((destination_fd = open(destination, O_WRONLY | O_CREAT | O_TRUNC, 0644)) < 0)
     {
-        close(source_file);
+        close(source_fd);
         return false;
     }
 
@@ -43,18 +43,18 @@ bool file_copy(const char* source, const char* destination)
 
     i32 read_result;
 
-    while ((read_result = read(source_file, buffer, sizeof(buffer))) > 0)
+    while ((read_result = read(source_fd, buffer, sizeof(buffer))) > 0)
     {
         i32 total_written = 0;
 
         while (total_written < read_result)
         {
-            const i32 write_result = write(destination_file, buffer + total_written, read_result - total_written);
+            const i32 write_result = write(destination_fd, buffer + total_written, read_result - total_written);
 
             if (write_result < 0)
             {
-                close(source_file);
-                close(destination_file);
+                close(source_fd);
+                close(destination_fd);
 
                 return false;
             }
@@ -63,8 +63,8 @@ bool file_copy(const char* source, const char* destination)
         }
     }
 
-    close(source_file);
-    close(destination_file);
+    close(source_fd);
+    close(destination_fd);
 
     return true;
 }
@@ -94,7 +94,7 @@ bool file_copy_to(const char* source, const char* directory)
 
 size_t file_read_until(ostring* str, const char* delimiter, FILE* input)
 {
-    if (!str || !input) return -1;
+    if (!str || !input) return OERROR;
 
     if (!*str) *str = ostring_new_empty(128);
 
@@ -107,12 +107,12 @@ size_t file_read_until(ostring* str, const char* delimiter, FILE* input)
 
         *str = ostring_push(*str, (char)c);
         
-        if (!*str) return -1;
+        if (!*str) return OERROR;
 
         written++;
     }
 
-    if (written == 0 || c == EOF) return -1;
+    if (written == 0 || c == EOF) return OERROR;
 
     return written;
 }

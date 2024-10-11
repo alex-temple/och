@@ -1,4 +1,3 @@
-#include <string.h>
 #include <stdio.h>
 
 #include "ostring.h"
@@ -175,6 +174,38 @@ ostring ostring_token(const char** ptr, const char* delimiters)
 }
 */
 
+i32 string_split(char* str, const char* delimiters, char*** sub_strings)
+{
+    if (!str || !delimiters || !sub_strings) return OERROR;
+
+    char** tokens = malloc(sizeof(*tokens));
+    if (!tokens) return OERROR;
+    *tokens = NULL;
+
+    char* ptr;
+    char* token = string_token(str, delimiters, &ptr);
+
+    i32 count = 0;
+    while (token)
+    {
+        tokens = realloc(tokens, sizeof(*tokens) * (count + 2));
+
+        if (!tokens)
+        {
+            free(tokens);
+            return OERROR;
+        }
+
+        tokens[count++] = token;
+        tokens[count] = NULL;
+
+        token = string_token(NULL, delimiters, &ptr);
+    }
+
+    *sub_strings = tokens;
+    return count;
+}
+
 bool string_contains(const char* str, const char c)
 {
     for (; *str; ++str) 
@@ -183,36 +214,4 @@ bool string_contains(const char* str, const char c)
     }
     
     return false;
-}
-
-const char* string_ptr_of(const char* str, const char c)
-{
-    if (!str) return NULL;
-
-    while (*str)
-    {
-        if (*str == c)
-            return str;
-
-        str++;
-    }
-
-    return NULL;
-}
-
-const char* string_ptr_of_last(const char* str, const char c)
-{
-    if (!str) return NULL;
-
-    const char* last = NULL;
-
-    while (*str)
-    {
-        if (*str == c)
-            last = str;
-
-        str++;
-    }
-
-    return last;
 }

@@ -4,6 +4,8 @@
 #define OINLINE __attribute__((always_inline)) inline
 #define ONOINLINE __attribute__((noinline))
 
+#define OERROR -1
+
 typedef enum { false, true } bool;
 #define BOOL_TO_STRING(x) x == true ? "true" : "false"
 
