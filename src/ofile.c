@@ -112,7 +112,5 @@ size_t file_read_until(ostring* str, const char* delimiter, FILE* input)
         written++;
     }
 
-    if (written == 0 || c == EOF) return OERROR;
-
     return written;
 }
