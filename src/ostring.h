@@ -9,6 +9,8 @@
 
 //clearly named macros
 
+#define string_length(str) strlen(str)
+
 #define string_compare(left, right) strcmp(left, right)
 
 #define string_ptr_of(str, c) strchr(str, c)
