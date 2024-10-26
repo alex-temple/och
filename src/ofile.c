@@ -20,7 +20,7 @@ bool is_file(const char* source)
 bool file_exists(const char* source)
 {
     struct stat s;
-    return !stat(source, &s) && !s.st_mode;
+    return stat(source, &s) == 0;
 }
 
 bool file_copy(const char* source, const char* destination)

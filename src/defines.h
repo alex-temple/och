@@ -1,9 +1,6 @@
 #ifndef O_DEFINES
 #define O_DEFINES
 
-#define OINLINE __attribute__((always_inline)) inline
-#define ONOINLINE __attribute__((noinline))
-
 #define OERROR -1
 
 typedef enum { false, true } bool;
@@ -36,5 +33,7 @@ _Static_assert(sizeof(f32) == 4, "f32 should be 4 bytes");
 _Static_assert(sizeof(f64) == 8, "f64 should be 8 bytes");
 
 typedef char* ostring;
+
+#define delegate(type, name, ...) type (*name)(##__VA_ARGS__)
 
 #endif
